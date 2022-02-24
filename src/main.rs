@@ -12,8 +12,11 @@ struct Args {
 
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let context: String = get_clipboard(formats::Unicode).expect("No result");
+async fn main() {
+    let context: String = match get_clipboard(formats::Unicode) {
+        Ok(result) => result,
+        Err(_) => String::from("剪贴板为空"),
+    };
     // println!("{:?}", context);
 
     let args = Args::parse();
@@ -22,7 +25,5 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         args.key, &context, &context
     );
 
-    let resp = reqwest::get(url).await?.text().await?;
-    // println!("{:#?}", resp);
-    Ok(())
+    reqwest::get(url).await.unwrap();
 }

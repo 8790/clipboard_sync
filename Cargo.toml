@@ -2,11 +2,17 @@
 name = "clipboard_sync"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+build = "build.rs"
 
 [dependencies]
 clipboard-win = "4.4.1"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
 clap = { version = "3", features = ["derive"] } # 命令行解析
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
+
+[package.metadata.winres]
+FileDescription = "Send to iOS"
+ProductName = "Send"
